@@ -13,37 +13,35 @@
 //compositons of functions. Without the returns, because of
 //Js default behavior, returns undefined.
 Function.prototype.curry = function(fn){
-    let origin = this;
+    let origin = this().f;
     return function(){
         return fn(origin())();
     }
 };
 
 Function.prototype.curryR = function(fn){
-    let origin = this;
+    let origin = this().n();
+    let arg = this().s;
     return function(){
-        console.log(fargs());
-        return origin(fn(fargs()))();
+        return origin.bind(null, fn(arg()));
     }
 };
 
-function fargs(){
-    return arguments.callee.caller.arguments.callee.arguments;
-}
 //We must execute functions all the way to the bottom of the stack
 //thus we need to provide a wrapper function for return values of our function defintions.
-function composable(x){
-    return ()=>{return x};
+function composable(x, a, f){
+     function wrap(j, f){return {f: ()=>{return x}, s: ()=>{return a}, n: ()=>{return f}}} //for rightbound composition, if bound to an argument, return the argument, else return the result
+     return ()=>{return wrap(a, f)};
 }
 
 function add(a){
-    return composable(a + 2);
+    return composable(a + 2, a, arguments.callee);
 }
 
 function multiply(a){
-    return composable(a * 6);
+    return composable(a * 6, a, arguments.callee);
 }
-let f = add(4).curry(add).curry(multiply)();
+let f = add(4).curry(add).curry(multiply)().s();
 let l = add(4).curryR(add).curryR(multiply)();
 console.log(f);
-
+console.log(l);
