@@ -39,6 +39,12 @@ describe('BASE', function () {
    let ul = fiat.unlambda; //alias unlambda for less typing.
    let cu = fiat.curry; //alias for curry for less typing.
 
+    describe('#unit()', function(){
+        it('Should return null', function(){
+            ul(fiat.unit());
+        });
+    });
+
     describe('#unlambda()', function(){
         it('Should execute nested anonymous functions until a non fn value is derived.', function(){
            let test = function (){
@@ -79,6 +85,22 @@ describe('BASE', function () {
             assert.equal(ul(cu(addThem, 4)), 6);
             assert.equal(typeof(cu(multiplyThem, cu(addThem, 4))), 'function');
             assert.equal(ul(cu(multiplyThem, cu(addThem, 4))), 12);
+        });
+    });
+
+    describe('#xle()' ,function(){
+        it('Should create just a tuple with the single argument and unit.', function(){
+            let uni = fiat.xle('one');
+            let tup = fiat.tuple('one', fiat.unit());
+            assert.equal(ul(uni[1]), ul(tup[1]));
+            assert.equal(ul(uni[2]), ul(tup[2]));
+        });
+
+        it('Should create a triple.', function(){
+            let tri = fiat.xle('one', 'two', 'three');
+            assert.equal(ul(tri[1]), 'three');
+            assert.equal(typeof(ul(tri[2])), 'object');
+            console.log(ul(tri[2]));
         });
     });
 });

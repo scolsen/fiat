@@ -74,25 +74,28 @@ function unlambda(fn){
     return fn();
 }
 
-function triple(x, y, z){
-    return tuple(tuple(x, y), z);
-}
-
-function xle(i){
-    let args  = [...arguments];
-    console.log(args);
-    console.log(i);
-    console.log(args[0]);
-    //curry to build tuples expansively 'bloom out'
-}
-
 function curry(f, g){
     if(typeof g === 'function'){return singleton(f(unlambda(g)))}
     return singleton(f(g));
 }
+
+function triple(x, y, z){
+    return tuple(tuple(x, y), z);
+}
+
+function xle(){
+    let args  = [...arguments];
+    let func = unit(); //we define a temporary function to recursively build up our chain.
+    for (k=0; k<args.length; k++){
+        func = tuple(args[k], func);
+    }
+    return func;
+}
+
 
 exports.unit = unit;
 exports.singleton = singleton;
 exports.tuple = tuple;
 exports.curry = curry;
 exports.unlambda = unlambda;
+exports.xle = xle;
