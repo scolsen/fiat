@@ -6,7 +6,7 @@
 
 const assert = require('assert');
 const sinon = require('sinon');
-require('../fiat');
+const fiat = require('../fiat');
 
 //test functions
 function addThem(a, b){
@@ -14,7 +14,7 @@ function addThem(a, b){
 }
 
 function multiplyThem(a, b){
-    return a * b;
+    fiat.singleton(a * b);
 }
 
 //Base test suite, check fundamental support functions
@@ -26,14 +26,56 @@ describe('BASE', function () {
         //run after the suite
     });
 
-    describe('#compose()', function(){
-        it('Should be a function', function(){
-            assert.equal(typeof(Function.prototype.compose), 'function');
+    //describe('#compose()', function(){
+    //    it('Should be a function', function(){
+    //        assert.equal(typeof(Function.prototype.compose), 'function');
+    //    });
+    //    it('Should return a function running the function calling' +
+    //        'compose as the argument to the function passed to compose', function () {
+    //        let test = addThem(1,2).compose(multiplyThem)();
+    //        console.log(test);
+    //    });
+    //});
+   let ul = fiat.unlambda; //alias unlambda for less typing.
+
+    describe('#unlambda()', function(){
+        it('Should execute nested anonymous functions until a non fn value is derived.', function(){
+           let test = function (){
+               return ()=>{
+                   return () => {
+                       return ()=>{
+                           return 1;
+                       }
+                   }
+               }
+           };
+           let single = function(){
+               return 2;
+           };
+           assert.equal(fiat.unlambda(test), 1);
+           assert.equal(fiat.unlambda(single), 2);
         });
-        it('Should return a function running the function calling' +
-            'compose as the argument to the function passed to compose', function () {
-            let test = addThem(1,2).compose(multiplyThem)();
-            console.log(test);
+    });
+
+    describe("#tuple()", function(){
+        it('Should return an object containing two anonymous functions', function(){
+            let tup = fiat.tuple(1,'a');
+            assert.equal(typeof(tup), 'object');
+            assert.equal(ul(tup[1]), 1);
+            assert.equal(ul(tup[2]), 'a');
+        });
+
+        it('Should return a tuple with a unit/null value if given one argument.', function(){
+            let tup = fiat.tuple(3);
+            assert.equal(ul(tup[1]), 3);
+            assert.equal(ul(tup[2]), ul(fiat.unit));
+        });
+    });
+
+    describe("#curry()", function(){
+        it('Should take two functions, and return another function', function(){
+           // assert.equal(typeof(fiat.curry(addThem(4), multiplyThem(2))), 'function');
+            console.log(fiat.curry(addThem(4), multiplyThem(2)));
         });
     });
 });
