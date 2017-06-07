@@ -79,10 +79,6 @@ function curry(f, g){
     return singleton(f(g));
 }
 
-function triple(x, y, z){
-    return tuple(tuple(x, y), z);
-}
-
 function xle(){
     let args  = [...arguments];
     let func = unit(); //we define a temporary function to recursively build up our chain.
