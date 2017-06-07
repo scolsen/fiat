@@ -10,11 +10,11 @@ const fiat = require('../fiat');
 
 //test functions
 function addThem(a, b){
-    return a + b;
+    return a + 2;
 }
 
 function multiplyThem(a, b){
-    fiat.singleton(a * b);
+    return a * 2
 }
 
 //Base test suite, check fundamental support functions
@@ -37,6 +37,7 @@ describe('BASE', function () {
     //    });
     //});
    let ul = fiat.unlambda; //alias unlambda for less typing.
+   let cu = fiat.curry; //alias for curry for less typing.
 
     describe('#unlambda()', function(){
         it('Should execute nested anonymous functions until a non fn value is derived.', function(){
@@ -73,9 +74,11 @@ describe('BASE', function () {
     });
 
     describe("#curry()", function(){
-        it('Should take two functions, and return another function', function(){
-           // assert.equal(typeof(fiat.curry(addThem(4), multiplyThem(2))), 'function');
-            console.log(fiat.curry(addThem(4), multiplyThem(2)));
+        it('Should return the result of applying the argumen to the fn', function(){
+            assert.equal(typeof(fiat.curry(addThem, 4)), 'function');
+            assert.equal(ul(cu(addThem, 4)), 6);
+            assert.equal(typeof(cu(multiplyThem, cu(addThem, 4))), 'function');
+            assert.equal(ul(cu(multiplyThem, cu(addThem, 4))), 12);
         });
     });
 });

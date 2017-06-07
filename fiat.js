@@ -56,7 +56,7 @@ function singleton(x){
 
 function tuple(x, y){
     let args = [...arguments];
-    if (args.length < 2) {return tuple(x, unit())};
+    if (args.length < 2) {return tuple(x, unit())}
     return {
         1: singleton(x),
         2: singleton(y)
@@ -87,7 +87,8 @@ function xle(i){
 }
 
 function curry(f, g){
-    return unit(); //to define
+    if(typeof g === 'function'){return singleton(f(unlambda(g)))}
+    return singleton(f(g));
 }
 
 exports.unit = unit;
