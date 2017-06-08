@@ -101,7 +101,8 @@ describe('BASE', function () {
             assert.equal(ul(tri[1]), 'three');
             assert.equal(typeof(ul(tri[2])), 'object');
             console.log(ul(tri[2]));
-            assert.equal(ul(tri[2][1]), 'two')
+            console.log(tri[2]);
+            assert.equal(ul(ul(tri[2])[1]), 'two')
         });
     });
 });

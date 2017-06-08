@@ -58,9 +58,9 @@ function tuple(x, y){
     let args = [...arguments];
     if (args.length < 2) {return tuple(x, unit())}
     return {
-        1: singleton(x),
-        2: singleton(y)
-    }
+            1: singleton(x),
+            2: singleton(y)
+           }
 }
 
 /**
