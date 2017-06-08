@@ -57,10 +57,10 @@ function singleton(x){
 function tuple(x, y){
     let args = [...arguments];
     if (args.length < 2) {return tuple(x, unit())}
-    return {
+    return singleton({
             1: singleton(x),
             2: singleton(y)
-           }
+           });
 }
 
 /**
@@ -72,6 +72,10 @@ function tuple(x, y){
 function unlambda(fn){
     if(typeof(fn()) === 'function'){return unlambda(fn())} //if the result of executing the function is another function nest another unlambda.
     return fn();
+}
+
+function unnest(fn){
+
 }
 
 function curry(f, g){

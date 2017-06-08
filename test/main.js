@@ -67,15 +67,15 @@ describe('BASE', function () {
     describe("#tuple()", function(){
         it('Should return an object containing two anonymous functions', function(){
             let tup = fiat.tuple(1,'a');
-            assert.equal(typeof(tup), 'object');
-            assert.equal(ul(tup[1]), 1);
-            assert.equal(ul(tup[2]), 'a');
+            assert.equal(typeof(tup), 'function');
+            assert.equal(ul(ul(tup)[1]), 1);
+            assert.equal(ul(ul(tup)[2]), 'a');
         });
 
         it('Should return a tuple with a unit/null value if given one argument.', function(){
             let tup = fiat.tuple(3);
-            assert.equal(ul(tup[1]), 3);
-            assert.equal(ul(tup[2]), ul(fiat.unit));
+            assert.equal(ul(ul(tup)[1]), 3);
+            assert.equal(ul(ul(tup)[2]), ul(fiat.unit));
         });
     });
 
@@ -92,17 +92,15 @@ describe('BASE', function () {
         it('Should create just a tuple with the single argument and unit.', function(){
             let uni = fiat.xle('one');
             let tup = fiat.tuple('one', fiat.unit());
-            assert.equal(ul(uni[1]), ul(tup[1]));
-            assert.equal(ul(uni[2]), ul(tup[2]));
+            assert.equal(ul(ul(uni)[1]), ul(ul(tup)[1]));
+            assert.equal(ul(ul(uni)[2]), ul(ul(tup)[2]));
         });
 
         it('Should create a triple.', function(){
             let tri = fiat.xle('one', 'two', 'three');
-            assert.equal(ul(tri[1]), 'three');
-            assert.equal(typeof(ul(tri[2])), 'object');
-            console.log(ul(tri[2]));
-            console.log(tri[2]);
-            assert.equal(ul(ul(tri[2])[1]), 'two')
+            assert.equal(ul(ul(tri)[1]), 'three');
+            assert.equal(typeof(ul(ul(tri)[2])), 'object');
+            assert.equal(ul(ul(ul(tri)[2])[1]), 'two')
         });
     });
 });
