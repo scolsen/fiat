@@ -74,13 +74,29 @@ function unlambda(fn){
     return fn();
 }
 
-function unnest(fn){
-
-}
-
 function curry(f, g){
     if(typeof g === 'function'){return singleton(f(unlambda(g)))}
     return singleton(f(g));
+}
+
+//Should create a functional pattern like the following:
+//fn(fn(fn(x)y)z)
+//use: expand(tuple, 1, 2);
+function expand(fn){
+    let args = [...arguments];
+    let func = unlambda(args[0]);
+    for(k=1; k<args.length; k++){
+        func = unlambda(func[args[k]]);
+    }
+    return func;
+}
+
+function unnest(tuple){
+    let args = [...arguments];
+    let func = unit();
+    for(k=0; k<args.length; k++){
+
+    }
 }
 
 function xle(){
@@ -99,3 +115,4 @@ exports.tuple = tuple;
 exports.curry = curry;
 exports.unlambda = unlambda;
 exports.xle = xle;
+exports.expand = expand;

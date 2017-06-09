@@ -26,16 +26,6 @@ describe('BASE', function () {
         //run after the suite
     });
 
-    //describe('#compose()', function(){
-    //    it('Should be a function', function(){
-    //        assert.equal(typeof(Function.prototype.compose), 'function');
-    //    });
-    //    it('Should return a function running the function calling' +
-    //        'compose as the argument to the function passed to compose', function () {
-    //        let test = addThem(1,2).compose(multiplyThem)();
-    //        console.log(test);
-    //    });
-    //});
    let ul = fiat.unlambda; //alias unlambda for less typing.
    let cu = fiat.curry; //alias for curry for less typing.
 
@@ -102,6 +92,26 @@ describe('BASE', function () {
             assert.equal(typeof(ul(ul(tri)[2])), 'object');
             assert.equal(ul(ul(ul(tri)[2])[1]), 'two')
         });
+    });
+
+    describe('#expand()', function(){
+        it('Should return a function', function(){
+            assert.equal(typeof(fiat.expand(fiat.tuple(1,2), 1)), 'number');
+            assert.equal(fiat.expand(fiat.tuple(1,2), 1), 1);
+        });
+
+        it('Should return unit', function(){
+            let uni = fiat.unit();
+            //assert unnest uni == unit == null.
+        });
+
+        it('Should return each value', function(){
+            let quad = fiat.xle('a', 2, 'm', 3);
+            assert.equal(fiat.expand(quad, 1), 3);
+            assert.equal(typeof(fiat.expand(quad, 2)), 'object');
+            assert.equal(typeof(fiat.expand(quad, 2, 1)), 'string');
+            assert.equal(fiat.expand(quad, 2, 1), 'm');
+       });
     });
 });
 
