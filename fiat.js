@@ -63,6 +63,8 @@ function tuple(x, y){
            });
 }
 
+function linear(){}
+
 /**
  * 'Unwraps' the values contained in nested lambda/anonymous functions.
  * Returns the first non-function value it hits.
@@ -87,6 +89,20 @@ function expand(fn){
     let func = unlambda(args[0]);
     for(k=1; k<args.length; k++){
         func = unlambda(func[args[k]]);
+    }
+    return func;
+}
+
+function linearCurry(fn){
+    let func;
+    let args = [...arguments];
+    if (typeof(args[0])=== 'object'){ //Account for multiple arguments
+       func = args[1](...args[0]);
+    } else {
+       func = curry(args[1], args[0]);
+    }
+    for(k=2; k<args.length; k++){
+        func = curry(args[k], func);
     }
     return func;
 }
@@ -121,3 +137,4 @@ exports.unlambda = unlambda;
 exports.xle = xle;
 exports.expand = expand;
 exports.uncase = uncase;
+exports.linearCurry = linearCurry;

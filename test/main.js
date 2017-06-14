@@ -13,6 +13,10 @@ function addThem(a, b){
     return a + 2;
 }
 
+function add(a, b){
+    return a + b;
+}
+
 function multiplyThem(a, b){
     return a * 2
 }
@@ -126,6 +130,13 @@ describe('BASE', function () {
             let tri = fiat.xle(1,2,3);
             assert.equal(fiat.uncase(tri, 3), 1);
             assert.equal(fiat.uncase(tri, 3), fiat.expand(tri, 2, 2, 1));
+        });
+    });
+
+    describe("#linearCurry()", function(){
+        it('Should return 12', function(){
+            assert.equal(ul(fiat.linearCurry(1, addThem, multiplyThem, multiplyThem)),12);
+            assert.equal(ul(fiat.linearCurry([1, 2], add, multiplyThem, multiplyThem)),12);
         });
     });
 });
