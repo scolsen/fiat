@@ -91,12 +91,16 @@ function expand(fn){
     return func;
 }
 
-function unnest(tuple){
-    let args = [...arguments];
-    let func = unit();
-    for(k=0; k<args.length; k++){
-
+//Auto populate number of 2s needed to uncast the target value.
+//e.g. a triple of (1,2,3) should return 1 when we run
+//uncase(triple, 3);
+function uncase(fn, n){
+    let args = [fn];
+    for (k= n - 1; k > 0; k--){
+        args.push(2);
     }
+    args.push(1);
+    return expand(...args);
 }
 
 function xle(){
@@ -116,3 +120,4 @@ exports.curry = curry;
 exports.unlambda = unlambda;
 exports.xle = xle;
 exports.expand = expand;
+exports.uncase = uncase;

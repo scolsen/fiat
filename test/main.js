@@ -111,7 +111,22 @@ describe('BASE', function () {
             assert.equal(typeof(fiat.expand(quad, 2)), 'object');
             assert.equal(typeof(fiat.expand(quad, 2, 1)), 'string');
             assert.equal(fiat.expand(quad, 2, 1), 'm');
+            assert.equal(fiat.expand(quad, 2, 2, 1), 2);
+            assert.equal(fiat.expand(quad, 2, 2, 2, 1), 'a');
        });
+    });
+
+    describe("#uncase()", function(){
+        it('Should return the first element', function(){
+            let t  = fiat.tuple('a', 'b');
+            assert.equal(fiat.uncase(t), 'a');
+        });
+
+        it('Should return the third element', function(){
+            let tri = fiat.xle(1,2,3);
+            assert.equal(fiat.uncase(tri, 3), 1);
+            assert.equal(fiat.uncase(tri, 3), fiat.expand(tri, 2, 2, 1));
+        });
     });
 });
 
